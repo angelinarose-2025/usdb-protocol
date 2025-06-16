@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "canisters": {
+      "backend": {
+        "type": "motoko",
+        "main": "backend/app.mo"
+      }
+    },
+    "defaults": {
+      "build": {
+        "packtool": ""
+      }
+    },
+    "dfx": "0.14.1",
+    "network": "local",
+    "language": "motoko"
+  }
+  
