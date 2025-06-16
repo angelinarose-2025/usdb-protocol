@@ -14,6 +14,26 @@ A BTC-backed stablecoin protocol using Runes and built on the Internet Computer.
 - `diagrams/`: System architecture diagrams
 - `scripts/`: Deployment or helper scripts
 
+  🔹 Metadata Module 
+
+Smart contract written in Motoko to manage USDB rune metadata.
+
+Features:
+
+	Add new rune metadata
+
+	Query individual rune
+
+	List all runes
+
+	Handles upgrade persistence using stable storage
+
+Schema fields:
+
+	runeID, collateralInfo, issuedAt, owner, status
+
+Status: ✅ Deployed and tested on Motoko Playground
+
 ## 🛠️ Quick Start
 
 ```bash
