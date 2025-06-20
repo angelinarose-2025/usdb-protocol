@@ -1,8 +1,9 @@
-# usdb-protocol
-“USDB – A BTC-backed stablecoin using runes on ICP
-# USDB Protocol 🪙
+# USDB Protocol 🪙  
+**A BTC-backed stablecoin using Runes on the Internet Computer (ICP)**
 
-A BTC-backed stablecoin protocol using Runes and built on the Internet Computer.
+USDB is a decentralized stablecoin protocol that issues BTC-collateralized assets in the form of Runes. Built entirely on the Internet Computer, USDB leverages Chain Key Bitcoin, HTTPS outcalls, and Motoko-based smart contracts for verifiable minting, burning, and metadata tracking.
+
+---
 
 ## 🧩 Project Structure
 
@@ -14,29 +15,103 @@ A BTC-backed stablecoin protocol using Runes and built on the Internet Computer.
 - `diagrams/`: System architecture diagrams
 - `scripts/`: Deployment or helper scripts
 
-  🔹 Metadata Module 
+---
+
+## 🔹 Metadata Module
 
 Smart contract written in Motoko to manage USDB rune metadata.
 
-Features:
+**Features:**
+- Add new rune metadata
+- Query individual rune
+- List all runes
+- Handles upgrade persistence using stable storage
 
-	Add new rune metadata
+**Schema fields:**
+- `runeID`, `collateralInfo`, `issuedAt`, `owner`, `status`
 
-	Query individual rune
+**Status:** ✅ Deployed and tested on Motoko Playground
 
-	List all runes
+---
 
-	Handles upgrade persistence using stable storage
+## 🔮 Oracle Canister Integration — USDB Protocol
 
-Schema fields:
+The `oracle.mo` canister provides a reliable price feed mechanism to the USDB ecosystem. It allows setting and fetching real-time BTC/USD prices, simulating oracle functionality required for minting and validating BTC-backed stablecoins.
 
-	runeID, collateralInfo, issuedAt, owner, status
+---
 
-Status: ✅ Deployed and tested on Motoko Playground
+### 📁 File Structure
 
-## 🛠️ Quick Start
+usdb-protocol/
+├── backend/
+│ └── app.mo # Imports and links all canisters
+├── oracle/
+│ └── oracle.mo # Oracle canister logic
+├── metadata/
+│ ├── metadata_model.mo # Shared types used in rune metadata
+│ └── metadata_store.mo # Handles storage & query of rune metadata
+├── dfx.json # Project config for local deployment
 
-```bash
+swift
+Copy
+Edit
+
+---
+
+### 📜 oracle.mo — Key Functions
+
+```motoko
+actor Oracle {
+  stable var btcUsdPrice: Float = 0;
+
+  public func setPrice(price: Float): async Text {
+    btcUsdPrice := price;
+    return "Price updated";
+  };
+
+  public query func getPrice(): async Float {
+    return btcUsdPrice;
+  };
+};
+setPrice: Sets the latest BTC/USD price (to be triggered by an authorized actor in production)
+
+getPrice: Returns the current BTC/USD price
+
+🔗 Integration in app.mo
+The backend/app.mo actor imports both the MetadataStore and Oracle canisters and can use oracle.getPrice() to validate rune minting or rebalancing logic.
+
+motoko
+Copy
+Edit
+import MetadataStore "canister:metadata_store";
+import Oracle "canister:oracle";
+⚙ dfx.json Setup
+Make sure your dfx.json includes the oracle canister:
+
+json
+Copy
+Edit
+"canisters": {
+  "oracle": {
+    "main": "oracle/oracle.mo",
+    "type": "motoko"
+  },
+  ...
+}
+🧪 Testing Locally
+To test the oracle locally:
+
+bash
+Copy
+Edit
 dfx start --background
+dfx deploy oracle
+dfx canister call oracle setPrice '(42000.5)'
+dfx canister call oracle getPrice
+🛠️ Quick Start
+bash
+Copy
+Edit
+dfx start --background
+dfx deploy oracle
 dfx deploy
-
