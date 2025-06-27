@@ -1,0 +1,4 @@
+service : {
+  getBTCPrice: () -> (float64) query;
+  setBTCPrice: (float64) -> (text);
+}

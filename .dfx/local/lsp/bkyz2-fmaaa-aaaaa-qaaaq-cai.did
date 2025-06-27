@@ -1,0 +1,19 @@
+type RuneMetadata = 
+ record {
+   collateralInfo: CollateralInfo;
+   mintedAt: int;
+   owner: principal;
+   runeID: text;
+   status: text;
+ };
+type CollateralInfo = 
+ record {
+   btcAmount: float64;
+   owner: principal;
+   txHash: text;
+ };
+service : {
+  estimateUSDBValue: (RuneMetadata) -> (float64);
+  getBTCPriceUSD: () -> (float64);
+  ping: () -> (text) query;
+}

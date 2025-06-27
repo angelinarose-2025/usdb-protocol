@@ -1,18 +1,22 @@
 {
-    "version": 1,
-    "canisters": {
-      "backend": {
-        "type": "motoko",
-        "main": "backend/app.mo"
-      }
+  "version": 1,
+  "canisters": {
+    "backend": {
+      "type": "motoko",
+      "main": "backend/app.mo",
+      "dependencies": ["oracle"] 
     },
-    "defaults": {
-      "build": {
-        "packtool": ""
-      }
-    },
-    "dfx": "0.14.1",
-    "network": "local",
-    "language": "motoko"
-  }
-  
+    "oracle": {
+      "type": "motoko",
+      "main": "oracle/oracle.mo"
+    }
+  },
+  "defaults": {
+    "build": {
+      "packtool": ""
+    }
+  },
+  "dfx": "0.14.1",
+  "network": "local",
+  "language": "motoko"
+}
